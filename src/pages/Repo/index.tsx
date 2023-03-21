@@ -1,11 +1,16 @@
-import React from 'react'
+import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
-type Props = {}
+interface RepositoryParams {
+  repoOwner: string;
+  repoName: string;
+}
 
-const Repo: React.FunctionComponent = (props: Props) => {
-  return (
-    <div>Repo: React.FunctionComponent</div>
-  )
+export const Repo: React.FC = () => {
+  
+  const { params } = useRouteMatch<RepositoryParams>();
+  
+  return <h1>Repo: {params.repoOwner}</h1>;
 };
 
 export default Repo;

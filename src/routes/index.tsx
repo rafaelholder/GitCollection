@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import DashBoard from '../pages/DashBoard';
 import Repo from '../pages/Repo';
 
@@ -9,10 +9,10 @@ const RoutesApp: React.FunctionComponent = (props: Props) => {
   return (
     
     <BrowserRouter>
-        <Routes>
-            <Route path='/' element={<DashBoard />}/>
-            <Route path='/repositories' element={<Repo />} />
-        </Routes>
+        <Switch>
+          <Route component={DashBoard} path="/" exact />
+          <Route component={Repo} path="/repositories/:repoOwner/:repoName" />
+        </Switch>
     </BrowserRouter>
   )
 }; 
