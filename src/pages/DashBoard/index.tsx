@@ -49,13 +49,15 @@ const DashBoard: React.FunctionComponent = () => {
   const handleAddRepo = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     if(!newRepo){
-      setInputError('Informe o username/repositório para pesquisa');
+      setInputError('Informe o username/repositório para pesquisa.');
       return;
     }
     for (let index = 0; index < repos.length; index++) {
       const element = repos[index];
       if(newRepo === element.full_name){
         setInputError('Repositório já pesquisado. Informe outro.');
+        formElement.current?.reset();
+        setNewRepo('');
         return;
       }
     }
