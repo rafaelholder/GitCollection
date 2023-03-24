@@ -1,4 +1,4 @@
-import React, {useEffect, useState, } from 'react'
+import React, {useEffect, useState, useRef } from 'react'
 import { FiChevronRight } from 'react-icons/fi';
 
 
@@ -33,6 +33,8 @@ const DashBoard: React.FunctionComponent = () => {
   }); // Armazena lista da api do github
   const [newRepo, setNewRepo] = useState(''); // Armazena o nome de busca e manda para o fetch()
   const [inputError, setInputError] = useState(''); // Armazena msgs de erros
+  const formElement = useRef<HTMLFormElement | null>(null); // Controlador do valor de input de pesquisa
+
 
   useEffect(() => {
     localStorage.setItem('@GitCollection:repositories', JSON.stringify(repos));
@@ -50,22 +52,29 @@ const DashBoard: React.FunctionComponent = () => {
       setInputError('Informe o username/repositório para pesquisa');
       return;
     }
-    
-    const response = await api.get<GithubRepo>(`repos/${newRepo}`);
-    // console.log(response);  
-    const repository = response.data;
-    // console.log(repository);
-    
     for (let index = 0; index < repos.length; index++) {
       const element = repos[index];
       if(newRepo === element.full_name){
-        setInputError('Repositório já pesquisado. Informe outro.')
+        setInputError('Repositório já pesquisado. Informe outro.');
         return;
       }
     }
-    setRepos([...repos, repository]);
-    setNewRepo('')
-    setInputError('');
+
+    try {
+      const response = await api.get<GithubRepo>(`repos/${newRepo}`);
+      // console.log(response);  
+      const repository = response.data;
+      // console.log(repository);
+      
+      setRepos([...repos, repository]);
+      formElement.current?.reset();
+      setNewRepo('');
+      setInputError('');  
+
+    } catch (error) {
+        setInputError('Repositório não encontrado no Github.');
+    }
+    
   }
 
   return (
@@ -73,7 +82,7 @@ const DashBoard: React.FunctionComponent = () => {
       <img src={logo} alt='GitCollection' />
       <Title>Catálogo de repositórios do Github</Title>
 
-      <Form hasError={Boolean(inputError)} onSubmit={handleAddRepo}>
+      <Form ref={formElement} hasError={Boolean(inputError)} onSubmit={handleAddRepo}>
         <input 
           placeholder='Username/Repository_name' 
           onChange={handleInput}
