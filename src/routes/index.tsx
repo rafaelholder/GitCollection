@@ -10,8 +10,8 @@ const RoutesApp: React.FunctionComponent = (props: Props) => {
     
     <BrowserRouter>
         <Switch>
-          <Route component={DashBoard} path="/" exact />
-          <Route component={Repo} path="/repositories/:repoOwner/:repoName" />
+          <Route component={DashBoard} exact path="/" />
+          <Route component={Repo} exact path="/repositories/:repoOwner/:repoName" />
         </Switch>
     </BrowserRouter>
   )

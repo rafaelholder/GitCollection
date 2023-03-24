@@ -1,6 +1,7 @@
 import React, {useEffect, useState, } from 'react'
 import { FiChevronRight } from 'react-icons/fi';
 
+
 //API
 import {api} from '../../services/api';
 
@@ -9,9 +10,7 @@ import {Title, Form, Repos, Error} from './styles'
 import logo from '../../assets/logo.svg'
 
 
-type Props = {}
-
-
+//Interfaces
 interface GithubRepo {
   full_name: string;
   description: string;
@@ -21,7 +20,7 @@ interface GithubRepo {
   };
 }
 
-const DashBoard: React.FunctionComponent = (props: Props) => {
+const DashBoard: React.FunctionComponent = () => {
 
   const [repos, setRepos] = useState<GithubRepo[]>(() => {
     const storageRepos = localStorage.getItem('@GitCollection:repositories')
@@ -64,7 +63,6 @@ const DashBoard: React.FunctionComponent = (props: Props) => {
         return;
       }
     }
-
     setRepos([...repos, repository]);
     setNewRepo('')
     setInputError('');
@@ -88,7 +86,6 @@ const DashBoard: React.FunctionComponent = (props: Props) => {
       <Repos>
         {repos.map((e) => (
           <a
-            
             href={`/repositories/${e.full_name}`}
             key={e.full_name}
           >
@@ -98,7 +95,7 @@ const DashBoard: React.FunctionComponent = (props: Props) => {
               <p>{e.description}</p>
             </div>
             <FiChevronRight size={20} />
-          </a>
+          </ a>
         ))}
       </Repos>
     </>
